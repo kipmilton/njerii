@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - MasterCBC{% endblock %}
+
+{% block Content %}
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="breadcrumbs">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"><i class="bi bi-house"></i> Home</a></li>
+            <li class="breadcrumb-item active current">About Us</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="title-wrapper">
+        <h1>About Us</h1>
+        <p>Empowering individuals and businesses with innovative solutions tailored for success.</p>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+      <div >
+        <span class="section-badge"><i class="bi bi-info-circle"></i> Who We Are</span>
+        <div class="row">
+          <div class="col-lg-6">
+            <h2 class="about-title">Driving Innovation for a Better Tomorrow</h2>
+            <p class="about-description">At MasterCBC, we are dedicated to developing cutting-edge solutions that transform industries and empower individuals. Our commitment to excellence ensures that we deliver high-quality services tailored to meet diverse needs.</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="about-text">With a passion for technology and innovation, we provide solutions that enhance productivity, efficiency, and growth. Our expertise spans multiple domains, ensuring that we remain at the forefront of progress.</p>
+            <p class="about-text">Join us on our journey to redefine possibilities, as we continue to innovate, inspire, and impact lives globally.</p>
+          </div>
+        </div>
+      </div>
+    </section><!-- /About Section -->
+
+    <!-- Mission, Vision, Values -->
+    <section class="mission-vision section">
+      <div class="container" data-aos="fade-up">
+        <div class="row features-boxes gy-4">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-bullseye"></i>
+              </div>
+              <h3>Our Mission</h3>
+              <p>To empower businesses and individuals through innovative, reliable, and technology-driven solutions.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-eye"></i>
+              </div>
+              <h3>Our Vision</h3>
+              <p>To be a global leader in providing innovative solutions that drive success and transformation.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-box">
+              <div class="icon-box">
+                <i class="bi bi-heart"></i>
+              </div>
+              <h3>Our Values</h3>
+              <p>Integrity, Innovation, Excellence, Customer-Centric Approach, and Social Responsibility.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Mission, Vision, Values -->
+
+{% endblock %}

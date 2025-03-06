@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home {% endblock %}
+
+{% block Content %}
+ 
+  <main class="main">
+
+    {% load static %}
+    
+
+    <!-- Subjects Section -->
+<section id="subjects-section" class="category-section section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Subjects</h2>
+    <div><span class="description-title">Explore Available Subjects</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4 mb-4">
+      {% for subject in subjects %}
+      <div class="col-lg-4">
+        <article class="featured-subject">
+          <div class="subject-img">
+            <img src="" alt="{{ subject.name }}">
+          </div>
+          <div class="subject-content">
+            <div class="subject-meta">
+              <span class="subject-name">{{ subject.name }}</span>
+              <div class="teacher-meta">
+                <span class="teacher-name">Taught by: {{ teacher.name }}</span>
+              </div>
+            </div>
+            <h2 class="title">
+              <a href="">View Details</a>
+            </h2>
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <p class="text-muted">No subjects added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Latest Assignments Section -->
+<section id="latest-assignments" class="featured-posts section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Latest Assignments</h2>
+    <div><span>Check Out</span> <span class="description-title">Recent Assignments</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="assignments-slider swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 800,
+          "autoplay": { "delay": 5000 },
+          "slidesPerView": 3,
+          "spaceBetween": 30,
+          "breakpoints": {
+            "320": { "slidesPerView": 1, "spaceBetween": 20 },
+            "768": { "slidesPerView": 2, "spaceBetween": 20 },
+            "1200": { "slidesPerView": 3, "spaceBetween": 30 }
+          }
+        }
+      </script>
+
+      <div class="swiper-wrapper">
+        {% for assignment in assignments %}
+        <div class="swiper-slide">
+          <div class="assignment-item">
+            <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}">
+            <div class="assignment-content">
+              <div class="assignment-meta">
+                <span><i class="bi bi-book"></i> {{ assignment.subject.name }}</span>
+                <span><i class="bi bi-person"></i> {{ assignment.teacher }}</span>
+                <span><i class="bi bi-clock"></i> Due: {{ assignment.due_date }}</span>
+              </div>
+              <h2><a href="">{{ assignment.title }}</a></h2>
+              <p>{{ assignment.description|truncatewords:20 }}</p>
+              <a href="" class="read-more">View Assignment <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No assignments available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Completed Assignments -->
+<section id="completed-assignments" class="featured-posts section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Latest Completed Assignments</h2>
+    <div><span>Recently Finished</span> <span class="description-title">Assignments</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4 mb-4">
+      {% for assignment in latest_done_assignments %}
+      <div class="col-lg-4">
+        <article class="completed-assignment">
+          <div class="assignment-img">
+            <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}" class="img-fluid" loading="lazy">
+          </div>
+          <div class="assignment-content">
+            <div class="assignment-meta">
+              <span class="assignment-title">{{ assignment.title }}</span>
+              <div class="teacher-meta">
+                <span class="teacher-name">Submitted by: {{ assignment.teacher }}</span>
+              </div>
+            </div>
+            <h2 class="title">
+              <a href="{% url 'assignment_detail' assignment.id %}">View Details</a>
+            </h2>
+          </div>
+        </article>
+      </div>
+      {% empty %}
+      <p class="text-muted">No completed assignments yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+    <!-- Call To Action 2 Section -->
+    <section id="call-to-action-2" class="call-to-action-2 section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="advertise-1 d-flex flex-column flex-lg-row gap-4 align-items-center position-relative">
+
+          <div class="content-left flex-grow-1" data-aos="fade-right" data-aos-delay="200">
+            <span class="badge text-uppercase mb-2">Join Now</span>
+            <h2>Enhance Your Learning with Our LMS</h2>
+            <p class="my-4">Access a variety of subjects, submit assignments, and track your progress with ease. Join thousands of students improving their academic journey today.</p>
+
+            <div class="features d-flex flex-wrap gap-3 mb-4">
+              <div class="feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>Interactive Learning</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>Assignment Tracking</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span>Teacher Support</span>
+              </div>
+            </div>
+
+            <div class="cta-buttons d-flex flex-wrap gap-3">
+              <a href="{% url 'myapp:register' %}" class="btn btn-primary">Get Started</a>
+              <a href="{% url 'myapp:about' %}" class="btn btn-outline">Learn More</a>
+            </div>
+          </div>
+
+          <div class="content-right position-relative" data-aos="fade-left" data-aos-delay="300">
+            <img src="{% static 'assets\img\subjects\pisicc.jpg' %}" alt="LMS Platform" class="img-fluid rounded-4">
+            <div class="floating-card">
+              <div class="card-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+              </div>
+              <div class="card-content">
+                <span class="stats-number">10K+</span>
+                <span class="stats-text">Active Students</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="decoration">
+            <div class="circle-1"></div>
+            <div class="circle-2"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Call To Action 2 Section -->
+
+
+    <!-- Latest Education Updates Section -->
+    <section id="latest-education-updates" class="latest-posts section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Latest Education Updates</h2>
+        <div><span>Stay Updated With</span> <span class="description-title">Education News</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/person-f-14.jpg' %}" alt="School Closing Dates" class="img-fluid">
+              </div>
+              <p class="post-category">Academic Calendar</p>
+              <h2 class="title">
+                <a href="blog-details.html">Official School Closing Dates Announced</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-01">March 1, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/person-f-15.jpg' %}" alt="National Exam Results" class="img-fluid">
+              </div>
+              <p class="post-category">Examinations</p>
+              <h2 class="title">
+                <a href="blog-details.html">National Exam Results To Be Released Soon</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-10">March 10, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/person-f-16.png' %}" alt="New Curriculum Update" class="img-fluid">
+              </div>
+              <p class="post-category">Curriculum Updates</p>
+              <h2 class="title">
+                <a href="blog-details.html">New Curriculum Changes Announced By Ministry</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-15">March 15, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/person-f-17.jpg' %}" alt="Teacher Strike News" class="img-fluid">
+              </div>
+              <p class="post-category">Education Policy</p>
+              <h2 class="title">
+                <a href="blog-details.html">Teachers Announce Strike Over Pay Disputes</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-20">March 20, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
+        </div>
+      </div>
+
+    </section><!-- /Latest Education Updates Section -->
+
+  </main>
+
+  
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+{% endblock %}

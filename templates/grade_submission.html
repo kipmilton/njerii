@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} Grade Submission {% endblock %}
+
+{% block Content %}
+<div class="container mt-4">
+    <h2>Grade Submission</h2>
+    <p><strong>Student:</strong> {{ submission.student.username }}</p>
+    <p><strong>Assignment:</strong> {{ submission.assignment.title }}</p>
+    <p><strong>Status:</strong> {{ submission.status }}</p>
+
+    <img src="{{ submission.image.url }}" class="img-fluid rounded" alt="Submission Image">
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit Grade</button>
+    </form>
+</div>
+{% endblock %}
