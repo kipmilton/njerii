@@ -30,48 +30,54 @@
 
     
 
-    <!-- Submitted Assignments -->
-    <div class="submitted-assignments card p-4">
-      <h3>Submitted Assignments</h3>
-      {% if submissions %}
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Student</th>
-              <th>Assignment</th>
-              <th>Status</th>
-              <th>Submission</th>
-              <th>Grade</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for submission in submissions %}
-            <tr>
-              <td>{{ submission.student.username }}</td>
-              <td>{{ submission.assignment.title }}</td>
-              <td>
-                <span class="badge {% if submission.status == 'Attempted' %} bg-warning {% else %} bg-secondary {% endif %}">
-                  {{ submission.status }}
-                </span>
-              </td>
-              <td>
-                <a href="{{ submission.image.url }}" target="_blank">
-                  <img src="{{ submission.image.url }}" width="50" height="50" alt="Submission Image" class="rounded">
-                </a>
-              </td>
-              <td>{{ submission.grade|default:"Not Graded" }}</td>
-              <td>
-                <a href="{% url 'grade_submission' submission.id %}" class="btn btn-primary btn-sm">Grade</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p class="text-muted">No assignments submitted yet.</p>
-      {% endif %}
-    </div>
+  <!-- Submitted Assignments -->
+<div class="submitted-assignments card p-4">
+  <h3>Submitted Assignments</h3>
+  
+  {% if submissions %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Assignment</th>
+          <th>Status</th>
+          <th>Submission</th>
+          <th>Grade</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for submission in submissions %}
+        <tr>
+          <td>{{ submission.student.username }}</td>
+          <td>{{ submission.assignment.title }}</td>
+          <td>
+            <span class="badge {% if submission.status == 'Attempted' %} bg-warning {% else %} bg-success {% endif %}">
+              {{ submission.status }}
+            </span>
+          </td>
+          <td>
+            {% if submission.image %}
+              <a href="{{ submission.image.url }}" target="_blank">
+                <img src="{{ submission.image.url }}" width="50" height="50" alt="Submission Image" class="rounded">
+              </a>
+            {% else %}
+              <span class="text-muted">No file uploaded</span>
+            {% endif %}
+          </td>
+          <td>{{ submission.grade|default:"Not Graded" }}</td>
+          <td>
+            <a href="{% url 'grade_submission' submission.id %}" class="btn btn-primary btn-sm">Grade</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">No assignments submitted yet.</p>
+  {% endif %}
+</div>
+
   </div>
 </section>
 

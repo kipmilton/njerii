@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Assignment {% endblock %}
+
+{% block Content %}
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <h2 class="text-primary">{{ assignment.title }}</h2>
+        <p><strong>Subject:</strong> <span class="text-success">{{ assignment.subject.name }}</span></p>
+        <p><strong>Teacher:</strong> <span class="text-info">{{ assignment.teacher.name }}</span></p>
+        <p><strong>Due Date:</strong> <span class="text-danger">{{ assignment.due_date }}</span></p>
+
+        {% if assignment.description %}
+            <p>{{ assignment.description }}</p>
+        {% else %}
+            <p class="text-muted">No description provided.</p>
+        {% endif %}
+
+        {% if assignment.file %}
+            <p><strong>Attached File:</strong> 
+                <a href="{{ assignment.file.url }}" download class="btn btn-link">Download</a>
+            </p>
+        {% endif %}
+
+        <hr>
+
+        <!-- Allow anyone to attempt the assignment -->
+        <a href="{% url 'myapp:submit_assignment' assignment.id %}" class="btn btn-success">Attempt Assignment Now</a>
+
+        <a href="{% url 'myapp:home_page' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

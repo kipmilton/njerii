@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Submit Assignment {% endblock %}
+
+{% block Content %}
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-primary text-center">Submit Assignment</h2>
+        <p class="text-muted text-center">Submit your work for <strong>{{ assignment.title }}</strong>.</p>
+
+        {% if submission %}
+            <div class="alert alert-info text-center">
+                <strong>Status:</strong> {{ submission.status }}  
+                {% if submission.image %}
+                    <p class="mt-2"><strong>Uploaded File:</strong> <a href="{{ submission.image.url }}" target="_blank">View Submission</a></p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <!-- Ensure the form is always displayed -->
+        <form method="POST" enctype="multipart/form-data" class="mt-3">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="image" class="form-label"><strong>Upload File (Image/PDF):</strong></label>
+                <input type="file" name="image" id="image" class="form-control" required>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-4">Submit</button>
+                <a href="{% url 'myapp:assignment_detail' assignment.id %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

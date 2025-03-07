@@ -12,8 +12,8 @@
     <!-- Subjects Section -->
 <section id="subjects-section" class="category-section section">
   <div class="container section-title" data-aos="fade-up">
-    <h2>Subjects</h2>
-    <div><span class="description-title">Explore Available Subjects</span></div>
+    <h2>Our Subjects</h2>
+    <div><span class="description-title">Welcome to Master CBC, Explore Available Subjects</span></div>
   </div>
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -22,17 +22,21 @@
       <div class="col-lg-4">
         <article class="featured-subject">
           <div class="subject-img">
-            <img src="" alt="{{ subject.name }}">
+            {% if subject.image %}
+              <img src="{{ subject.image.url }}" alt="{{ subject.name }}" class="img-fluid">
+            {% else %}
+              <img src="{% static 'default-image.jpg' %}" alt="No Image Available" class="img-fluid">
+            {% endif %}
           </div>
           <div class="subject-content">
             <div class="subject-meta">
               <span class="subject-name">{{ subject.name }}</span>
               <div class="teacher-meta">
-                <span class="teacher-name">Taught by: {{ teacher.name }}</span>
+                <span class="teacher-name">Taught by: {{ subject.teacher.name }}</span>
               </div>
             </div>
             <h2 class="title">
-              <a href="">View Details</a>
+              <a href="{% url 'myapp:subject_detail' subject.id %}">View Details</a>
             </h2>
           </div>
         </article>
@@ -48,7 +52,7 @@
 <section id="latest-assignments" class="featured-posts section">
   <div class="container section-title" data-aos="fade-up">
     <h2>Latest Assignments</h2>
-    <div><span>Check Out</span> <span class="description-title">Recent Assignments</span></div>
+    <div><span>Check Out</span> <span class="description-title">our recently added assignments</span></div>
   </div>
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -72,16 +76,20 @@
         {% for assignment in assignments %}
         <div class="swiper-slide">
           <div class="assignment-item">
+            {% if assignment.subject.image %}
             <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}">
+          {% else %}
+            <img src="{% static 'static\assets\img\subjects\cemm.jpg' %}" alt="No Image Available">
+          {% endif %}
             <div class="assignment-content">
               <div class="assignment-meta">
                 <span><i class="bi bi-book"></i> {{ assignment.subject.name }}</span>
-                <span><i class="bi bi-person"></i> {{ assignment.teacher }}</span>
+                <span><i class="bi bi-person"></i> {{ assignment.teacher.name }}</span>
                 <span><i class="bi bi-clock"></i> Due: {{ assignment.due_date }}</span>
               </div>
-              <h2><a href="">{{ assignment.title }}</a></h2>
+              <h2><a href="{% url 'myapp:assignment_detail' assignment.id %}">{{ assignment.title }}</a></h2>
               <p>{{ assignment.description|truncatewords:20 }}</p>
-              <a href="" class="read-more">View Assignment <i class="bi bi-arrow-right"></i></a>
+              <a href="{% url 'myapp:assignment_detail' assignment.id %}" class="read-more">View Assignment details<i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -106,13 +114,17 @@
       <div class="col-lg-4">
         <article class="completed-assignment">
           <div class="assignment-img">
-            <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}" class="img-fluid" loading="lazy">
+            {% if assignment.subject.image %}
+              <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}" class="img-fluid" loading="lazy">
+            {% else %}
+              <img src="{% static 'default-image.jpg' %}" alt="No Image Available" class="img-fluid" loading="lazy">
+            {% endif %}
           </div>
           <div class="assignment-content">
             <div class="assignment-meta">
               <span class="assignment-title">{{ assignment.title }}</span>
               <div class="teacher-meta">
-                <span class="teacher-name">Submitted by: {{ assignment.teacher }}</span>
+                <span class="teacher-name">Submitted by: {{ assignment.student.name }}</span>
               </div>
             </div>
             <h2 class="title">
@@ -127,6 +139,7 @@
     </div>
   </div>
 </section>
+
 
 
     <!-- Call To Action 2 Section -->
