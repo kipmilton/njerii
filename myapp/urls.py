@@ -19,7 +19,10 @@ urlpatterns = [
     path('upload-assignment/', views.upload_assignment, name='upload_assignment'),
     path('subjects/<int:id>/', views.subject_detail, name='subject_detail'),
     path('assignments/<int:id>/', views.assignment_detail, name='assignment_detail'),
-    path('assignment/<int:assignment_id>/submit/', views.submit_assignment, name='submit_assignment')
+    path('assignment/<int:assignment_id>/submit/', views.submit_assignment, name='submit_assignment'),
+    path('delete-subject/<int:subject_id>/', views.delete_subject, name='delete_subject'),
+    path('delete-assignment/<int:assignment_id>/', views.delete_assignment, name='delete_assignment'),
+    path('teachers-delete/', views.teachers_delete, name='teachers_delete'),
 ]
 
 if settings.DEBUG:

@@ -101,19 +101,19 @@ def subjects_assignments_view(request):
     return render(request, 'index.html', context)
 
 
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def upload_assignment(request):
-    if request.method == 'POST':
-        form = AssignmentForm(request.POST, request.FILES)
-        if form.is_valid():
-            assignment = form.save(commit=False)
-            assignment.teacher = request.user
-            assignment.save()
-            return redirect('myapp:teachers_dashboard')
-    else:
-        form = AssignmentForm()
-    return render(request, 'teachers.html', {'assignment_form': form})
+# @login_required
+# @user_passes_test(lambda u: u.is_superuser)
+# def upload_assignment(request):
+#     if request.method == 'POST':
+#         form = AssignmentForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             assignment = form.save(commit=False)
+#             assignment.teacher = request.user
+#             assignment.save()
+#             return redirect('myapp:teachers_dashboard')
+#     else:
+#         form = AssignmentForm()
+#     return render(request, 'teachers.html', {'assignment_form': form})
 
 
 
@@ -185,6 +185,25 @@ def submit_assignment(request, assignment_id):
     return render(request, "submit_assignment.html", {"assignment": assignment, "submission": submission})
 
 
+# def add_subject(request):
+#     if request.method == 'POST':
+#         form = SubjectForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('myapp:teachers_dashboard')
+#     else:
+#         form = SubjectForm()
+#     return render(request, 'teacher.html', {'subject_form': form})
+
+
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib.auth.decorators import login_required, user_passes_test
+# from .models import Subject, Assignment
+# from .forms import SubjectForm, AssignmentForm
+
+# Add subject
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def add_subject(request):
     if request.method == 'POST':
         form = SubjectForm(request.POST, request.FILES)
@@ -194,3 +213,45 @@ def add_subject(request):
     else:
         form = SubjectForm()
     return render(request, 'teacher.html', {'subject_form': form})
+
+# Delete subject
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def delete_subject(request, subject_id):
+    subject = get_object_or_404(Subject, id=subject_id)
+    subject.delete()
+    return redirect('myapp:teachers_delete')
+
+# Upload assignment
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def upload_assignment(request):
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.teacher = request.user
+            assignment.save()
+            return redirect('myapp:teachers_dashboard')
+    else:
+        form = AssignmentForm()
+    return render(request, 'teachers.html', {'assignment_form': form})
+
+# Delete assignment
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def delete_assignment(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    assignment.delete()
+    return redirect('myapp:teachers_delete')
+
+# View all subjects and assignments in dashboard
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def teachers_delete(request):
+    subjects = Subject.objects.all()
+    assignments = Assignment.objects.all()
+    return render(request, 'teachers_delete.html', {
+        'subjects': subjects,
+        'assignments': assignments
+    })
