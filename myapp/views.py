@@ -45,6 +45,15 @@ def register(request):
 
 
 
+
+
+
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render, redirect
+from myapp.models import Subject, Assignment, Submission  # Ensure Submission is imported
+from myapp.forms import SubjectForm, AssignmentForm
+
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def teachers_dashboard(request):
@@ -71,13 +80,64 @@ def teachers_dashboard(request):
     assignments = Assignment.objects.all().order_by('-created_at')
     latest_done_assignments = Assignment.objects.filter(status='Completed').order_by('-updated_at')[:5]
 
+    # **Fix: Fetch submitted assignments**
+    submissions = Submission.objects.all().order_by('-submitted_at')  # Adjust as needed
+
     return render(request, 'teachers.html', {
         'subject_form': subject_form,
         'assignment_form': assignment_form,
         'subjects': subjects,
         'assignments': assignments,
         'latest_done_assignments': latest_done_assignments,
+        'submissions': submissions,  # **Pass submissions to the template**
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# @login_required
+# @user_passes_test(lambda u: u.is_superuser)
+# def teachers_dashboard(request):
+#     if request.method == "POST":
+#         if 'add_subject' in request.POST:
+#             subject_form = SubjectForm(request.POST, request.FILES)
+#             if subject_form.is_valid():
+#                 subject_form.save()
+#                 return redirect('myapp:teachers_dashboard')
+
+#         elif 'upload_assignment' in request.POST:
+#             assignment_form = AssignmentForm(request.POST, request.FILES)
+#             if assignment_form.is_valid():
+#                 assignment = assignment_form.save(commit=False)
+#                 assignment.teacher = request.user  # Assign the logged-in teacher
+#                 assignment.save()
+#                 return redirect('myapp:teachers_dashboard')
+
+#     else:
+#         subject_form = SubjectForm()
+#         assignment_form = AssignmentForm()
+
+#     subjects = Subject.objects.all()
+#     assignments = Assignment.objects.all().order_by('-created_at')
+#     latest_done_assignments = Assignment.objects.filter(status='Completed').order_by('-updated_at')[:5]
+
+#     return render(request, 'teachers.html', {
+#         'subject_form': subject_form,
+#         'assignment_form': assignment_form,
+#         'subjects': subjects,
+#         'assignments': assignments,
+#         'latest_done_assignments': latest_done_assignments,
+#     })
 
 
 
@@ -101,22 +161,6 @@ def subjects_assignments_view(request):
     return render(request, 'index.html', context)
 
 
-# @login_required
-# @user_passes_test(lambda u: u.is_superuser)
-# def upload_assignment(request):
-#     if request.method == 'POST':
-#         form = AssignmentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             assignment = form.save(commit=False)
-#             assignment.teacher = request.user
-#             assignment.save()
-#             return redirect('myapp:teachers_dashboard')
-#     else:
-#         form = AssignmentForm()
-#     return render(request, 'teachers.html', {'assignment_form': form})
-
-
-
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -134,7 +178,7 @@ def grade_submission(request, submission_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Grade updated!")
-            return redirect('view_submissions')
+            return redirect('myapp:teachers_dashboard')
     else:
         form = GradeForm(instance=submission)
     return render(request, "grade_submission.html", {"form": form, "submission": submission})
@@ -145,14 +189,38 @@ def grade_submission(request, submission_id):
 def home_page(request):
     subjects = Subject.objects.all()
     assignments = Assignment.objects.all().order_by('-created_at')
-    latest_done_assignments = Assignment.objects.filter(status='Completed').order_by('-updated_at')[:5]
+
+    # Fetch latest completed submissions with grades
+    latest_done_assignments = Submission.objects.filter(
+        status='Completed'
+    ).select_related('assignment__subject').order_by('-submitted_at')[:5]
 
     context = {
         'subjects': subjects,
         'assignments': assignments,
-        'latest_done_assignments': latest_done_assignments,
+        'latest_done_assignments': latest_done_assignments, 
     }
     return render(request, "index.html", context)
+
+
+
+
+
+
+
+
+
+# def home_page(request):
+#     subjects = Subject.objects.all()
+#     assignments = Assignment.objects.all().order_by('-created_at')
+#     latest_done_assignments = Assignment.objects.filter(status='Completed').order_by('-updated_at')[:5]
+
+#     context = {
+#         'subjects': subjects,
+#         'assignments': assignments,
+#         'latest_done_assignments': latest_done_assignments,
+#     }
+#     return render(request, "index.html", context)
 
 
 def about(request):

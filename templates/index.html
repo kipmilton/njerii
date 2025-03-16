@@ -101,6 +101,8 @@
   </div>
 </section>
 
+
+
 <!-- Latest Completed Assignments -->
 <section id="completed-assignments" class="featured-posts section">
   <div class="container section-title" data-aos="fade-up">
@@ -109,36 +111,33 @@
   </div>
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
-    <div class="row gy-4 mb-4">
-      {% for assignment in latest_done_assignments %}
-      <div class="col-lg-4">
-        <article class="completed-assignment">
-          <div class="assignment-img">
-            {% if assignment.subject.image %}
-              <img src="{{ assignment.subject.image.url }}" alt="{{ assignment.subject.name }}" class="img-fluid" loading="lazy">
-            {% else %}
-              <img src="{% static 'default-image.jpg' %}" alt="No Image Available" class="img-fluid" loading="lazy">
-            {% endif %}
-          </div>
-          <div class="assignment-content">
-            <div class="assignment-meta">
-              <span class="assignment-title">{{ assignment.title }}</span>
-              <div class="teacher-meta">
-                <span class="teacher-name">Submitted by: {{ assignment.student.name }}</span>
-              </div>
-            </div>
-            <h2 class="title">
-              <a href="{% url 'assignment_detail' assignment.id %}">View Details</a>
-            </h2>
-          </div>
-        </article>
-      </div>
-      {% empty %}
-      <p class="text-muted">No completed assignments yet.</p>
-      {% endfor %}
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Subject</th>
+            <th>Date Submitted</th>
+            <th>Grade Awarded</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in latest_done_assignments %}
+          <tr>
+            <td>{{ submission.assignment.subject.name }}</td>
+            <td>{{ submission.submitted_at|date:"M d, Y" }}</td>
+            <td>{{ submission.grade|default:"Not Graded" }}</td>  <!-- Using 'grade' field -->
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center text-muted">No completed assignments yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
+
 
 
 
@@ -279,6 +278,42 @@
               </div>
             </article>
           </div><!-- End post list item -->
+
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/download.png' %}" alt="New Curriculum Update" class="img-fluid">
+              </div>
+              <p class="post-category">University admissions</p>
+              <h2 class="title">
+                <a href="blog-details.html">Ministry the opening of KUCCPS portal</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-15">March, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
+          <div class="col-lg-4">
+            <article>
+              <div class="post-img">
+                <img src="{% static 'assets/img/person/download.jpg' %}" alt="New Curriculum Update" class="img-fluid">
+              </div>
+              <p class="post-category">Academic Contest</p>
+              <h2 class="title">
+                <a href="blog-details.html">Nyanza region ranked the best in this years science contest</a>
+              </h2>
+              <div class="d-flex align-items-center">
+                <p class="post-date">
+                  <time datetime="2025-03-15">March 13, 2025</time>
+                </p>
+              </div>
+            </article>
+          </div><!-- End post list item -->
+
 
         </div>
       </div>

@@ -28,13 +28,31 @@ class Assignment(models.Model):
         return self.title
 
 
+# class Submission(models.Model):
+#     """Model for students' assignment submissions."""
+#     student = models.ForeignKey(User, on_delete=models.CASCADE)
+#     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+#     image = models.ImageField(upload_to='submissions/', blank=True, null=True)  
+#     status = models.CharField(max_length=20, choices=[('Not Attempted', 'Not Attempted'), ('Attempted', 'Attempted')], default='Not Attempted')
+#     grade = models.CharField(max_length=10, blank=True, null=True)
+
+#     def __str__(self):
+#         return f"{self.student.username} - {self.assignment.title}" if self.assignment else self.student.username
+
+
+from django.db import models
+from django.contrib.auth.models import User
+
+from django.utils.timezone import now
+
 class Submission(models.Model):
-    """Model for students' assignment submissions."""
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='submissions/', blank=True, null=True)  
-    status = models.CharField(max_length=20, choices=[('Not Attempted', 'Not Attempted'), ('Attempted', 'Attempted')], default='Not Attempted')
-    grade = models.CharField(max_length=10, blank=True, null=True)
+    image = models.ImageField(upload_to='submissions/', blank=True, null=True)
+    submitted_at = models.DateTimeField(default=now)  # Default to current timestamp
+    status = models.CharField(max_length=20, choices=[('Attempted', 'Attempted'), ('Completed', 'Completed')])
+    grade = models.CharField(max_length=20, blank=True, null=True)
+
 
     def __str__(self):
-        return f"{self.student.username} - {self.assignment.title}" if self.assignment else self.student.username
+        return f"{self.student.username} - {self.assignment.title}"

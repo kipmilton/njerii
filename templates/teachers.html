@@ -153,7 +153,7 @@
               </td>
               <td>{{ submission.grade|default:"Not Graded" }}</td>
               <td>
-                <a href="{% url 'grade_submission' submission.id %}" class="btn btn-primary btn-sm">Grade</a>
+                <a href="{% url 'myapp:grade_submission' submission.id %}" class="btn btn-primary btn-sm">Grade</a>
               </td>
             </tr>
             {% endfor %}
